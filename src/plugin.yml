@@ -1,0 +1,11 @@
+main: me.tylerolson.stargate.Main
+name: Stargate
+version: 1.0
+api-version: 1.13
+description: Stargate
+author: Tyler Olson (Glarity)
+commands:
+  createstargate:
+    description: Creates a Stargate
+    aliases: addstargate
+    usage: "Usage: /<command> [name]"
