@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 
 import me.tylerolson.stargate.Main;
 import me.tylerolson.stargate.Stargate;
+import me.tylerolson.stargate.StargatePath;
 
 public class CommandCreateStargate implements CommandExecutor {
 
@@ -25,7 +26,7 @@ public class CommandCreateStargate implements CommandExecutor {
 				String stargate = args[0];
 				if (instance.getConfig().contains(stargate)) {
 					sender.sendMessage("The Stargate '" + stargate + "' already exsists.");
-				} else if (instance.stargateManager.isGateStructure(player.getLocation()) != 0) {
+				} else if (StargatePath.foundStargate(player.getLocation())) {
 					Location tempSpawnLocation = new Location(player.getLocation().getWorld(), player.getLocation().getX(), player.getLocation().getY(), player.getLocation().getZ());
 					Stargate tempStargate = new Stargate(stargate, tempSpawnLocation, true);
 					instance.stargateManager.addStargate(tempStargate);

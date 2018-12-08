@@ -26,7 +26,6 @@ public class Main extends JavaPlugin implements Listener {
 
 	@Override
 	public void onEnable() {
-
 		config = getConfig();
 		stargateManager = new StargateManager(this, ChatColor.AQUA + "Stargate Network");
 		getServer().getPluginManager().registerEvents(this, this);
@@ -38,23 +37,23 @@ public class Main extends JavaPlugin implements Listener {
 		Metrics metrics = new Metrics(this);
 		getLogger().info("Enabled bStats!");
 	}
-	
+
 	@Override
 	public void onDisable() {
 
 	}
-	
-	public boolean findGate(Location dhdLocation) {
+
+	public boolean findGateFromDHD(Location dhdLocation) {
 		Location dhdLocationZ = new Location(dhdLocation.getWorld(), dhdLocation.getX(), dhdLocation.getY(), dhdLocation.getZ());
 		Location dhdLocationZ_ = new Location(dhdLocation.getWorld(), dhdLocation.getX(), dhdLocation.getY(), dhdLocation.getZ());
 		dhdLocationZ.setZ(dhdLocationZ.getZ() + 3);
 		dhdLocationZ_.setZ(dhdLocationZ_.getZ() - 3);
 		for (int i = 0; i < 8; i++) {
-			if (stargateManager.isGateStructure(dhdLocationZ) != 0) {
+			if (StargatePath.foundStargate(dhdLocationZ)) {
 				return true;
-			} else if (stargateManager.isGateStructure(dhdLocationZ_) != 0) {
+			} else if (StargatePath.foundStargate(dhdLocationZ_)) {
 				return true;
-			}else {
+			} else {
 				dhdLocationZ.setZ(dhdLocationZ.getZ() + 1);
 				dhdLocationZ_.setZ(dhdLocationZ_.getZ() - 1);
 			}
@@ -89,9 +88,9 @@ public class Main extends JavaPlugin implements Listener {
 				if (event.getPlayer().getLocation().getBlock().getRelative(BlockFace.DOWN).getX() == tempGateBlock.getX()) {
 					if (event.getPlayer().getLocation().getBlock().getRelative(BlockFace.DOWN).getY() == tempGateBlock.getY()) {
 						if (event.getPlayer().getLocation().getBlock().getRelative(BlockFace.DOWN).getZ() == tempGateBlock.getZ()) {
-							//if (isGateStructure(event.getPlayer().getLocation()) != 0) {
-								// teleport
-							//}
+							// if (isGateStructure(event.getPlayer().getLocation()) != 0) {
+							// teleport
+							// }
 						}
 					}
 				}
@@ -104,21 +103,21 @@ public class Main extends JavaPlugin implements Listener {
 		if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
 			if (event.getClickedBlock().getType().equals(Material.STONE_BUTTON)) {
 				if (event.getClickedBlock().getRelative(BlockFace.DOWN).getType().equals(Material.MOSSY_COBBLESTONE)) {
-					if (findGate(event.getClickedBlock().getLocation())) {
+					if (findGateFromDHD(event.getClickedBlock().getLocation())) {
 						stargateManager.openInventory(event.getPlayer());
 					} else {
-						event.getPlayer().sendMessage("No Stargate found.");
-					}	
+						event.getPlayer().sendMessage("No Stargate found. (possibly destroyed)");
+					}
 				}
 			}
 		}
 
 	}
-	
+
 	@EventHandler
 	public void onInventoryClick(InventoryClickEvent event) {
 		Player player = (Player) event.getWhoClicked();
-		
+
 		if (event.getInventory() == null) {
 			return;
 		}
