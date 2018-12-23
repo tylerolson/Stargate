@@ -26,9 +26,9 @@ Run this command while in the referenced Stargate to delete it from the config.
 
 ## Todo
 
-* Check for Stargate on both North/South and East/West axes
-* Teleport when walking through portal instead of using button
-* Customizable Stargate portal icon
+*  Check for Stargate on both North/South and East/West axes
+*  Teleport when walking through portal instead of using button
+*  Customizable Stargate portal icon
   
 ## Screenshots
 
