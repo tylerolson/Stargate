@@ -85,7 +85,7 @@ public class Main extends JavaPlugin implements Listener {
 		}
 
 	}
-	
+
 	public static void sendMessageWithPrefix(CommandSender sender, String message) {
 		sender.sendMessage(ChatColor.GOLD + "[Stargate] " + ChatColor.RESET + message);
 	}

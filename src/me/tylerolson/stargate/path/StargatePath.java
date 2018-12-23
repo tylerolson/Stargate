@@ -38,6 +38,34 @@ public class StargatePath {
 			add(new StargatePathSegment(BlockFace.EAST, true));
 		}
 	};
+	
+	public static final List<StargatePathSegment> pathCircleNS = new ArrayList<StargatePathSegment>() {
+		{
+			add(new StargatePathSegment(BlockFace.DOWN, false));
+			add(new StargatePathSegment(BlockFace.NORTH, false));
+			add(new StargatePathSegment(BlockFace.NORTH, true));
+			add(new StargatePathSegment(BlockFace.UP, false));
+			add(new StargatePathSegment(BlockFace.NORTH, true));
+			add(new StargatePathSegment(BlockFace.UP, false));
+			add(new StargatePathSegment(BlockFace.UP, false));
+			add(new StargatePathSegment(BlockFace.UP, false));
+			add(new StargatePathSegment(BlockFace.SOUTH, true));
+			add(new StargatePathSegment(BlockFace.UP, false));
+			add(new StargatePathSegment(BlockFace.UP, true));
+			add(new StargatePathSegment(BlockFace.SOUTH, false));
+			add(new StargatePathSegment(BlockFace.SOUTH, false));
+			add(new StargatePathSegment(BlockFace.SOUTH, false));
+			add(new StargatePathSegment(BlockFace.SOUTH, true));
+			add(new StargatePathSegment(BlockFace.DOWN, false));
+			add(new StargatePathSegment(BlockFace.SOUTH, true));
+			add(new StargatePathSegment(BlockFace.DOWN, false));
+			add(new StargatePathSegment(BlockFace.DOWN, false));
+			add(new StargatePathSegment(BlockFace.DOWN, false));
+			add(new StargatePathSegment(BlockFace.NORTH, true));
+			add(new StargatePathSegment(BlockFace.DOWN, false));
+			add(new StargatePathSegment(BlockFace.NORTH, true));
+		}
+	};
 
 	public static final List<StargatePathSegment> pathNetherEW = new ArrayList<StargatePathSegment>() {
 		{
@@ -90,6 +118,9 @@ public class StargatePath {
 			return true;
 		}
 		if (isValidPath(tempLocation, pathCircleEW)) {
+			return true;
+		}
+		if (isValidPath(tempLocation, pathCircleNS)) {
 			return true;
 		}
 		return false;
