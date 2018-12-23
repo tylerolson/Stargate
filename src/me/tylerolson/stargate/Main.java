@@ -6,7 +6,6 @@ import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -18,21 +17,22 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import me.tylerolson.stargate.bstats.Metrics;
 import me.tylerolson.stargate.commands.CommandCreateStargate;
+import me.tylerolson.stargate.commands.CommandDeleteStargate;
+import me.tylerolson.stargate.path.StargatePath;
 
 public class Main extends JavaPlugin implements Listener {
 
-	public FileConfiguration config;
-	public StargateManager stargateManager;
+	public static JavaPlugin plugin;
+	public static StargateManager stargateManager;
 
 	@Override
 	public void onEnable() {
-		config = getConfig();
-		stargateManager = new StargateManager(this, ChatColor.AQUA + "Stargate Network");
+		plugin = this;
+		stargateManager = new StargateManager(ChatColor.AQUA + "Stargate Network");
 		getServer().getPluginManager().registerEvents(this, this);
-		config.options().copyDefaults(true);
-		saveConfig();
 
-		this.getCommand("createstargate").setExecutor(new CommandCreateStargate(this));
+		this.getCommand("createstargate").setExecutor(new CommandCreateStargate());
+		this.getCommand("deletestargate").setExecutor(new CommandDeleteStargate());
 		@SuppressWarnings("unused")
 		Metrics metrics = new Metrics(this);
 		getLogger().info("Enabled bStats!");
@@ -46,16 +46,26 @@ public class Main extends JavaPlugin implements Listener {
 	public boolean findGateFromDHD(Location dhdLocation) {
 		Location dhdLocationZ = new Location(dhdLocation.getWorld(), dhdLocation.getX(), dhdLocation.getY(), dhdLocation.getZ());
 		Location dhdLocationZ_ = new Location(dhdLocation.getWorld(), dhdLocation.getX(), dhdLocation.getY(), dhdLocation.getZ());
+		Location dhdLocationX = new Location(dhdLocation.getWorld(), dhdLocation.getX(), dhdLocation.getY(), dhdLocation.getZ());
+		Location dhdLocationX_ = new Location(dhdLocation.getWorld(), dhdLocation.getX(), dhdLocation.getY(), dhdLocation.getZ());
 		dhdLocationZ.setZ(dhdLocationZ.getZ() + 3);
 		dhdLocationZ_.setZ(dhdLocationZ_.getZ() - 3);
+		dhdLocationX.setX(dhdLocationX.getX() + 3);
+		dhdLocationX_.setX(dhdLocationX_.getX() - 3);
 		for (int i = 0; i < 8; i++) {
 			if (StargatePath.foundStargate(dhdLocationZ)) {
 				return true;
 			} else if (StargatePath.foundStargate(dhdLocationZ_)) {
 				return true;
+			} else if (StargatePath.foundStargate(dhdLocationX)) {
+				return true;
+			} else if (StargatePath.foundStargate(dhdLocationX_)) {
+				return true;
 			} else {
 				dhdLocationZ.setZ(dhdLocationZ.getZ() + 1);
 				dhdLocationZ_.setZ(dhdLocationZ_.getZ() - 1);
+				dhdLocationX.setX(dhdLocationX.getX() + 1);
+				dhdLocationX_.setX(dhdLocationX_.getX() - 1);
 			}
 		}
 		return false;

@@ -9,41 +9,47 @@ import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 
+import me.tylerolson.stargate.path.StargatePath;
+
 public class StargateManager {
 
-	private Main instance;
-	private List<Stargate> stargates = new ArrayList<Stargate>();
 	private String menuName;
 	private Inventory stargateInventory;
 
-	public StargateManager(Main instance, String menuName) {
-		this.instance = instance;
+	public StargateManager(String menuName) {
 		this.menuName = menuName;
 
-		if (instance.getConfig().getConfigurationSection("Stargate") != null) {
-			if (instance.getConfig().getConfigurationSection("Stargate").getKeys(false) != null) {
-				for (String name : instance.getConfig().getConfigurationSection("Stargate").getKeys(false)) {
-					World tempWorld = instance.getServer().getWorld(instance.getConfig().getString("Stargate." + name + ".spawn.world"));
-					double tempSpawnX = instance.getConfig().getDouble("Stargate." + name + ".spawn.x");
-					double tempSpawnY = instance.getConfig().getDouble("Stargate." + name + ".spawn.y");
-					double tempSpawnZ = instance.getConfig().getDouble("Stargate." + name + ".spawn.z");
-					Location tempSpawnLocation = new Location(tempWorld, tempSpawnX, tempSpawnY, tempSpawnZ);
-					boolean tempActive = instance.getConfig().getBoolean("Stargate." + name + ".isActive");
-					addStargate(new Stargate(name, tempSpawnLocation, tempActive));
-					instance.getLogger().info("Added Stargate '" + name + "'");
-				}
+		if (this.getStargates().size() > 0) {
+			for (Stargate stargate : this.getStargates()) {
+				Main.plugin.getLogger().info("Found Stargate '" + stargate.getName() + "'");
 			}
 		} else {
-			instance.getLogger().info("No Stargates found");
+			Main.plugin.getLogger().info("No Stargates found");
 		}
 	}
 
 	public List<Stargate> getStargates() {
+		List<Stargate> stargates = new ArrayList<Stargate>();
+
+		Main.plugin.reloadConfig();
+		if (Main.plugin.getConfig().getConfigurationSection("Stargate") != null) {
+			if (Main.plugin.getConfig().getConfigurationSection("Stargate").getKeys(false) != null) {
+				for (String name : Main.plugin.getConfig().getConfigurationSection("Stargate").getKeys(false)) {
+					World tempWorld = Main.plugin.getServer().getWorld(Main.plugin.getConfig().getString("Stargate." + name + ".spawn.world"));
+					double tempSpawnX = Main.plugin.getConfig().getDouble("Stargate." + name + ".spawn.x");
+					double tempSpawnY = Main.plugin.getConfig().getDouble("Stargate." + name + ".spawn.y");
+					double tempSpawnZ = Main.plugin.getConfig().getDouble("Stargate." + name + ".spawn.z");
+					Location tempSpawnLocation = new Location(tempWorld, tempSpawnX, tempSpawnY, tempSpawnZ);
+					boolean tempActive = Main.plugin.getConfig().getBoolean("Stargate." + name + ".isActive");
+					stargates.add(new Stargate(name, tempSpawnLocation, tempActive));
+				}
+			}
+		}
 		return stargates;
 	}
 
 	public Stargate getStargateByName(String name) {
-		for (Stargate stargate : stargates) {
+		for (Stargate stargate : this.getStargates()) {
 			if (stargate.getName().equals(name)) {
 				return stargate;
 			}
@@ -53,25 +59,35 @@ public class StargateManager {
 
 	public void addStargate(Stargate stargate) {
 		updateStargateConfig(stargate);
-		this.stargates.add(stargate);
 	}
 
 	public void removeStargate(Stargate stargate) {
-		instance.getConfig().set("Stargate." + stargate.getName(), "");
-		this.stargates.remove(stargate);
+		Main.plugin.getConfig().set("Stargate." + stargate.getName(), null);
+		Main.plugin.saveConfig();
+	}
+
+	public boolean doesStargateExist(String stargateName) {
+		for (Stargate stargate : this.getStargates()) {
+			System.out.println("size " + this.getStargates().size());
+			System.out.println(stargate.getName() + " " + stargateName);
+			if (stargate.getName().equals(stargateName)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public void updateStargateConfig(Stargate stargate) {
-		instance.getConfig().set("Stargate." + stargate.getName() + ".spawn.world", stargate.getSpawnLocation().getWorld().getName());
-		instance.getConfig().set("Stargate." + stargate.getName() + ".spawn.x", stargate.getSpawnLocation().getX());
-		instance.getConfig().set("Stargate." + stargate.getName() + ".spawn.y", stargate.getSpawnLocation().getY());
-		instance.getConfig().set("Stargate." + stargate.getName() + ".spawn.z", stargate.getSpawnLocation().getZ());
-		instance.getConfig().set("Stargate." + stargate.getName() + ".block.world", stargate.getSpawnLocation().getWorld().getName());
-		instance.getConfig().set("Stargate." + stargate.getName() + ".block.x", stargate.getGateBlockLocation().getX());
-		instance.getConfig().set("Stargate." + stargate.getName() + ".block.y", stargate.getGateBlockLocation().getY());
-		instance.getConfig().set("Stargate." + stargate.getName() + ".block.z", stargate.getGateBlockLocation().getZ());
-		instance.getConfig().set("Stargate." + stargate.getName() + ".isActive", stargate.isActive());
-		instance.saveConfig();
+		Main.plugin.getConfig().set("Stargate." + stargate.getName() + ".spawn.world", stargate.getSpawnLocation().getWorld().getName());
+		Main.plugin.getConfig().set("Stargate." + stargate.getName() + ".spawn.x", stargate.getSpawnLocation().getX());
+		Main.plugin.getConfig().set("Stargate." + stargate.getName() + ".spawn.y", stargate.getSpawnLocation().getY());
+		Main.plugin.getConfig().set("Stargate." + stargate.getName() + ".spawn.z", stargate.getSpawnLocation().getZ());
+		Main.plugin.getConfig().set("Stargate." + stargate.getName() + ".block.world", stargate.getSpawnLocation().getWorld().getName());
+		Main.plugin.getConfig().set("Stargate." + stargate.getName() + ".block.x", stargate.getGateBlockLocation().getX());
+		Main.plugin.getConfig().set("Stargate." + stargate.getName() + ".block.y", stargate.getGateBlockLocation().getY());
+		Main.plugin.getConfig().set("Stargate." + stargate.getName() + ".block.z", stargate.getGateBlockLocation().getZ());
+		Main.plugin.getConfig().set("Stargate." + stargate.getName() + ".isActive", stargate.isActive());
+		Main.plugin.saveConfig();
 	}
 
 	public void updateStargateActive(Stargate stargate) {
@@ -89,7 +105,7 @@ public class StargateManager {
 
 	public void openInventory(Player player) {
 		this.stargateInventory = Bukkit.createInventory(null, 18, menuName);
-		for (Stargate stargate : stargates) {
+		for (Stargate stargate : this.getStargates()) {
 			stargateInventory.addItem(stargate.getInvItemStack());
 		}
 		player.openInventory(stargateInventory);

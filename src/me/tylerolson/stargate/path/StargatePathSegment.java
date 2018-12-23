@@ -1,4 +1,4 @@
-package me.tylerolson.stargate;
+package me.tylerolson.stargate.path;
 
 import org.bukkit.block.BlockFace;
 

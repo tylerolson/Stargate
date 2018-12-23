@@ -8,15 +8,9 @@ import org.bukkit.entity.Player;
 
 import me.tylerolson.stargate.Main;
 import me.tylerolson.stargate.Stargate;
-import me.tylerolson.stargate.StargatePath;
+import me.tylerolson.stargate.path.StargatePath;
 
 public class CommandCreateStargate implements CommandExecutor {
-
-	private Main instance;
-
-	public CommandCreateStargate(Main main) {
-		this.instance = main;
-	}
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -24,16 +18,17 @@ public class CommandCreateStargate implements CommandExecutor {
 			Player player = (Player) sender;
 			if (args.length == 1) {
 				String stargate = args[0];
-				if (instance.getConfig().contains(stargate)) {
-					sender.sendMessage("The Stargate '" + stargate + "' already exsists.");
+				if (Main.stargateManager.doesStargateExist(stargate)) {
+					player.sendMessage("The Stargate '" + stargate + "' already exsists.");
+					return true;
 				} else if (StargatePath.foundStargate(player.getLocation())) {
 					Location tempSpawnLocation = new Location(player.getLocation().getWorld(), player.getLocation().getX(), player.getLocation().getY(), player.getLocation().getZ());
 					Stargate tempStargate = new Stargate(stargate, tempSpawnLocation, true);
-					instance.stargateManager.addStargate(tempStargate);
-					sender.sendMessage("Created Stargate '" + args[0] + "'");
+					Main.stargateManager.addStargate(tempStargate);
+					player.sendMessage("Created Stargate '" + args[0] + "'");
 					return true;
 				} else {
-					sender.sendMessage("The Stargate must be made of mossy cobblestone.");
+					player.sendMessage("The Stargate must be made of mossy cobblestone.");
 					return true;
 				}
 			}

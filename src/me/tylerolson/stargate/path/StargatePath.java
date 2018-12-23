@@ -1,4 +1,4 @@
-package me.tylerolson.stargate;
+package me.tylerolson.stargate.path;
 
 import java.util.ArrayList;
 import java.util.List;

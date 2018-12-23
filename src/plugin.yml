@@ -7,5 +7,9 @@ author: Tyler Olson (Glarity)
 commands:
   createstargate:
     description: Creates a Stargate
-    aliases: addstargate
+    aliases: [addstargate]
+    usage: "Usage: /<command> [name]"
+  deletestargate:
+    description: Creates a Stargate
+    aliases: [delstargate, removestargate, remstargate]
     usage: "Usage: /<command> [name]"
