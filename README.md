@@ -2,6 +2,8 @@
   
 ---
 
+<a href="https://spigotmc.org"><img src="https://img.shields.io/badge/Minecraft-1.13.2-orange.svg"/></a> <a class="badge-align" href="https://www.codacy.com/app/Glarity/Stargate?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Glarity/Stargate&amp;utm_campaign=Badge_Grade"><img src="https://api.codacy.com/project/badge/Grade/7613709496404781ad51f1cfacb70a12"/></a>
+
 This Bukkit/Spigot plugin adds the Stargate and DHD into Minecraft
 
 ## Features
