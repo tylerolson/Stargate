@@ -17,10 +17,10 @@ public class CommandDeleteStargate implements CommandExecutor {
 				String stargate = args[0];
 				if (Main.stargateManager.doesStargateExist(stargate)) {
 					Main.stargateManager.removeStargate(Main.stargateManager.getStargateByName(args[0]));
-					player.sendMessage("Stargate '" + stargate + "' has been removed.");
+					Main.sendMessageWithPrefix(player, "Stargate '" + stargate + "' has been removed.");
 					return true;
 				} else {
-					player.sendMessage("The Stargate '" + stargate + "' does not exist");
+					Main.sendMessageWithPrefix(player, "The Stargate '" + stargate + "' does not exist");
 					return true;
 				}
 			}

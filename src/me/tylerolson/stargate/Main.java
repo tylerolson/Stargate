@@ -6,6 +6,7 @@ import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -18,6 +19,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import me.tylerolson.stargate.bstats.Metrics;
 import me.tylerolson.stargate.commands.CommandCreateStargate;
 import me.tylerolson.stargate.commands.CommandDeleteStargate;
+import me.tylerolson.stargate.commands.CommandStargates;
 import me.tylerolson.stargate.path.StargatePath;
 
 public class Main extends JavaPlugin implements Listener {
@@ -33,14 +35,10 @@ public class Main extends JavaPlugin implements Listener {
 
 		this.getCommand("createstargate").setExecutor(new CommandCreateStargate());
 		this.getCommand("deletestargate").setExecutor(new CommandDeleteStargate());
+		this.getCommand("stargates").setExecutor(new CommandStargates());
 		@SuppressWarnings("unused")
 		Metrics metrics = new Metrics(this);
 		getLogger().info("Enabled bStats!");
-	}
-
-	@Override
-	public void onDisable() {
-
 	}
 
 	public boolean findGateFromDHD(Location dhdLocation) {
@@ -73,7 +71,7 @@ public class Main extends JavaPlugin implements Listener {
 
 	public int gatePlayer(Player player, String gate) {
 		if (!getConfig().contains("Stargate." + gate)) {
-			player.sendMessage("The Stargate '" + gate + "' does not exist.");
+			sendMessageWithPrefix(player, "The Stargate '" + gate + "' does not exist.");
 			return 0;
 		}
 		stargateManager.updateStargateActive(stargateManager.getStargateByName(gate));
@@ -82,10 +80,14 @@ public class Main extends JavaPlugin implements Listener {
 			player.teleport(stargateManager.getStargateByName(gate).getSpawnLocation());
 			return 1;
 		} else {
-			player.sendMessage("The Stargate '" + gate + "' is not active. (possibly destroyed)");
+			sendMessageWithPrefix(player, "The Stargate '" + gate + "' is not active. (possibly destroyed)");
 			return 2;
 		}
 
+	}
+	
+	public static void sendMessageWithPrefix(CommandSender sender, String message) {
+		sender.sendMessage(ChatColor.GOLD + "[Stargate] " + ChatColor.RESET + message);
 	}
 
 	@EventHandler
@@ -116,7 +118,7 @@ public class Main extends JavaPlugin implements Listener {
 					if (findGateFromDHD(event.getClickedBlock().getLocation())) {
 						stargateManager.openInventory(event.getPlayer());
 					} else {
-						event.getPlayer().sendMessage("No Stargate found. (possibly destroyed)");
+						sendMessageWithPrefix(event.getPlayer(), "No Stargate found. (possibly destroyed)");
 					}
 				}
 			}

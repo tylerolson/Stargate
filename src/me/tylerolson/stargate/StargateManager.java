@@ -68,8 +68,6 @@ public class StargateManager {
 
 	public boolean doesStargateExist(String stargateName) {
 		for (Stargate stargate : this.getStargates()) {
-			System.out.println("size " + this.getStargates().size());
-			System.out.println(stargate.getName() + " " + stargateName);
 			if (stargate.getName().equals(stargateName)) {
 				return true;
 			}

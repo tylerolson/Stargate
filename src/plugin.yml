@@ -13,3 +13,6 @@ commands:
     description: Creates a Stargate
     aliases: [delstargate, removestargate, remstargate]
     usage: "Usage: /<command> [name]"
+  stargates:
+    description: Lists all stargates.
+    usage: "Usage: /<command>"

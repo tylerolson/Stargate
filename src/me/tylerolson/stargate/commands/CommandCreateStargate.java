@@ -19,16 +19,16 @@ public class CommandCreateStargate implements CommandExecutor {
 			if (args.length == 1) {
 				String stargate = args[0];
 				if (Main.stargateManager.doesStargateExist(stargate)) {
-					player.sendMessage("The Stargate '" + stargate + "' already exsists.");
+					Main.sendMessageWithPrefix(player, "The Stargate '" + stargate + "' already exsists.");
 					return true;
 				} else if (StargatePath.foundStargate(player.getLocation())) {
 					Location tempSpawnLocation = new Location(player.getLocation().getWorld(), player.getLocation().getX(), player.getLocation().getY(), player.getLocation().getZ());
 					Stargate tempStargate = new Stargate(stargate, tempSpawnLocation, true);
 					Main.stargateManager.addStargate(tempStargate);
-					player.sendMessage("Created Stargate '" + args[0] + "'");
+					Main.sendMessageWithPrefix(player, "Created Stargate '" + args[0] + "'");
 					return true;
 				} else {
-					player.sendMessage("The Stargate must be made of mossy cobblestone.");
+					Main.sendMessageWithPrefix(player, "The Stargate must be made of mossy cobblestone.");
 					return true;
 				}
 			}
