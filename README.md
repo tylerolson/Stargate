@@ -2,6 +2,8 @@
   
 ---
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/9ec0d1e189de4d8f9698740f8a1eab16)](https://app.codacy.com/app/Glarity/Stargate?utm_source=github.com&utm_medium=referral&utm_content=Glarity/Stargate&utm_campaign=Badge_Grade_Settings)
+
 This Bukkit/Spigot plugin adds the Stargate and DHD into Minecraft
 
 ## Features
