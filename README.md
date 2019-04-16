@@ -16,6 +16,10 @@ If a Stargate is broken after creation it will disable any travel to and from th
 
 ## Commands
 
+### /stargates
+
+Lists the current Stargates.
+
 ### /createstargate (stargate name)
 
 Run this command while in a built Stargate to formally create it.
